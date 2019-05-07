@@ -57,8 +57,8 @@ public class RemoteDeviceDiscovery {
 		};
 
 		synchronized (inquiryCompletedEvent) {
-			LocalDevice ld = LocalDevice.getLocalDevice();
-			System.out.println("#本机蓝牙名称:" + ld.getFriendlyName());
+			LocalDevice localDevice = LocalDevice.getLocalDevice();
+			System.out.println("#本机蓝牙名称:" + localDevice.getFriendlyName()+",蓝牙地址为:"+localDevice.getBluetoothAddress());
 			boolean started = LocalDevice.getLocalDevice().getDiscoveryAgent().startInquiry(DiscoveryAgent.GIAC,listener);
 			if (started) {
 				System.out.println("#" + "等待搜索完成...");
@@ -74,17 +74,17 @@ public class RemoteDeviceDiscovery {
 		return devicesDiscoveredSet;
 	}
 
-	public static String deviceName(RemoteDevice d) {
+	public static String deviceName(RemoteDevice remoteDevice) {
 
-		String address = d.getBluetoothAddress();
+		String address = remoteDevice.getBluetoothAddress();
 
 		String name = "";
 		try {
-			name = d.getFriendlyName(false);
+			name = remoteDevice.getFriendlyName(false);
 		} catch (IOException e) {
 			System.out.println("#Error: " + e.getMessage());
 			try {
-				name = d.getFriendlyName(false);
+				name = remoteDevice.getFriendlyName(false);
 			} catch (IOException e2) {
 				System.out.println("#Error: " + e2.getMessage());
 			}
@@ -99,18 +99,18 @@ public class RemoteDeviceDiscovery {
 			toret += (new Date()).getTime() + ", ";
 		}
 		toret += BluCatUtil.clean(address) + ", " + "\"" + BluCatUtil.clean(name) + "\", " + "Trusted:"
-				+ d.isTrustedDevice() + ", " + "Encrypted:" + d.isEncrypted();
+				+ remoteDevice.isTrustedDevice() + ", " + "Encrypted:" + remoteDevice.isEncrypted();
 
 		if (BlucatState.rssi) {
 			try {
-				rssi = String.valueOf(RemoteDeviceHelper.readRSSI(d));
+				rssi = String.valueOf(RemoteDeviceHelper.readRSSI(remoteDevice));
 			} catch (Throwable e) {
 
-				String url = "btl2cap://" + d.getBluetoothAddress() + ":1";
+				String url = "btl2cap://" + remoteDevice.getBluetoothAddress() + ":1";
 
 				try {
 					BlucatState.connection = Connector.open(url, Connector.READ_WRITE, true);
-					rssi = String.valueOf(RemoteDeviceHelper.readRSSI(d));
+					rssi = String.valueOf(RemoteDeviceHelper.readRSSI(remoteDevice));
 					BlucatState.connection.close();
 
 				} catch (IOException e1) {

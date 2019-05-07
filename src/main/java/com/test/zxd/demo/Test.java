@@ -12,6 +12,6 @@ import javax.bluetooth.UUID;
 public class Test {
 
 	public static void main(String[] args) {
-		System.out.println(new UUID(80087355).toString());
+		System.out.println(new UUID(0x1106).toString());
 	}
 }

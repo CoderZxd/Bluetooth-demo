@@ -44,7 +44,7 @@ public class BluetoothService implements Runnable {
 		try {
 			localDevice = LocalDevice.getLocalDevice();
 			if(!localDevice.setDiscoverable(DiscoveryAgent.GIAC)) {
-				System.out.println("请将蓝牙设置为可被发现");
+				System.err.println("请将蓝牙设置为可被发现");
 			}else{
 				System.out.println(localDevice.getFriendlyName()+"蓝牙已设置为可被发现!");
 				System.out.println(localDevice.getBluetoothAddress());
@@ -58,8 +58,10 @@ public class BluetoothService implements Runnable {
 			/**
 			 * 作为服务端，被请求
 			 */
+//			String url = "btspp://localhost:0000100000001000800000805f9b34fb;name=RemoteBluetooth;authenticate=false;encrypt=false";
 //			String url = "btspp://localhost:0000100000001000800000805f9b34fb;name=RemoteBluetooth";
-			String url = "btspp://localhost:"+localDevice.getBluetoothAddress()+";name=RemoteBluetooth";
+			String url = "btspp://B827EBCD98EE:1";
+//			String url = "btspp://D89C67B9A334:1;name=RemoteBluetooth";
             streamConnectionNotifier = (StreamConnectionNotifier)Connector.open(url);
 		} catch (IOException e) {
 			e.printStackTrace();
